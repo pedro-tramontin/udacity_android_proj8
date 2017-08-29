@@ -8,4 +8,16 @@
 
     <string name="by">By:</string>
     <string name="date">Published on</string>
+
+    <string name="settings_menu_item">Settings</string>
+    <string name="settings_title">News Settings</string>
+
+    <string name="settings_page_size_label">Page Size</string>
+    <string name="settings_page_size_key" translatable="false">page_size</string>
+    <string name="settings_page_size_default" translatable="false">10</string>
+
+    <string name="settings_update_interval_label">Update Interval (min)</string>
+    <string name="settings_update_interval_key" translatable="false">update_interval</string>
+    <string name="settings_update_interval_default" translatable="false">5</string>
+
 </resources>

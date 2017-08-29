@@ -1,16 +1,20 @@
 package com.example.android.newsapp;
 
+import android.support.annotation.NonNull;
+
 /**
  * Class to store the news data
  */
 class News {
+
     private final String mTitle;
     private final String mSection;
     private final String mAuthor;
     private final String mDate;
     private final String mUrl;
 
-    News(String mTitle, String mSection, String mUrl, String mAuthor, String mDate) {
+    News(String mTitle, String mSection, String mUrl, String mAuthor,
+        String mDate) {
         this.mTitle = mTitle;
         this.mSection = mSection;
         this.mUrl = mUrl;
