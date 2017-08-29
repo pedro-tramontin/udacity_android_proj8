@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">News APP</string>
+    <string name="search_here">Filter here</string>
+    <string name="no_results">No news to display\nUse the TextBox above to filter the news and
+        display them here.</string>
+    <string name="no_internet_connection">There is no internet connection available\nPlease
+    check your internet settings and search again.</string>
+
+    <string name="by">By:</string>
+    <string name="date">Published on</string>
+</resources>
