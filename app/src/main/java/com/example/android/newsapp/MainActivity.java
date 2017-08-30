@@ -31,12 +31,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager
-    .LoaderCallbacks<List<News>>, OnSharedPreferenceChangeListener {
+        .LoaderCallbacks<List<News>>, OnSharedPreferenceChangeListener {
 
     private static final String TAG = "MainActivity";
 
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
 
     // The Guardian News API URL
     private static final String THE_GUARDIAN_NEWS_API_URL = "http://content.guardianapis" +
-        ".com/search";
+            ".com/search";
 
     private static final String QUERY_PARAM = "q";
     private static final String SHOW_FIELDS_PARAM = "show-fields";
@@ -96,9 +97,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 News currentNews = mNewsListAdapter.getItem(position);
-                Uri earthquakeUri = Uri.parse(currentNews.getUrl());
-                Intent websiteIntent = new Intent(Intent.ACTION_VIEW, earthquakeUri);
-                startActivity(websiteIntent);
+                Uri newsUri = Uri.parse(currentNews.getUrl());
+
+                Intent websiteIntent = new Intent(Intent.ACTION_VIEW, newsUri);
+                if (websiteIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(websiteIntent);
+                }
             }
         });
 
@@ -143,14 +147,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
     @Override
     public Loader<List<News>> onCreateLoader(int id, Bundle args) {
         String pageSize = getPreference(R.string.settings_page_size_key,
-            R.string.settings_page_size_default);
+                R.string.settings_page_size_default);
 
         Uri.Builder uriBuilder = Uri.parse(THE_GUARDIAN_NEWS_API_URL)
-            .buildUpon()
-            .appendQueryParameter(SHOW_FIELDS_PARAM, "headline,byline,firstPublicationDate")
-            .appendQueryParameter(API_KEY_PARAM, "36a7884f-b99c-41d7-9bbf-e94206c36fbd")
-            .appendQueryParameter(TAG_PARAM, "politics/politics")
-            .appendQueryParameter(PAGE_SIZE_PARAM, pageSize);
+                .buildUpon()
+                .appendQueryParameter(SHOW_FIELDS_PARAM, "headline,byline,firstPublicationDate")
+                .appendQueryParameter(API_KEY_PARAM, "36a7884f-b99c-41d7-9bbf-e94206c36fbd")
+                .appendQueryParameter(TAG_PARAM, "politics/politics")
+                .appendQueryParameter(PAGE_SIZE_PARAM, pageSize);
 
         if (!"".equals(mEditQuery.getText().toString())) {
             uriBuilder.appendQueryParameter(QUERY_PARAM, mEditQuery.getText().toString());
@@ -188,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState,
-        PersistableBundle persistentState) {
+                                       PersistableBundle persistentState) {
         super.onRestoreInstanceState(savedInstanceState, persistentState);
 
         int savedPosition = savedInstanceState.getInt(LIST_SCROLL_POSITION);
@@ -212,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
      */
     private boolean isInternetAvailable() {
         ConnectivityManager connMgr = (ConnectivityManager)
-            getSystemService(Context.CONNECTIVITY_SERVICE);
+                getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo == null || !networkInfo.isConnected()) {
             return false;
@@ -251,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
         Log.i(TAG, key);
 
         if (key.equals(getString(R.string.settings_page_size_key)) || key
-            .equals(getString(R.string.settings_update_interval_key))) {
+                .equals(getString(R.string.settings_update_interval_key))) {
 
             // Reeschedules the updater
             mUpdateScheduler.shutdown();
@@ -266,15 +270,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager
 
     private void scheduleNewsUpdate() {
         String updateInterval = getPreference(R.string.settings_update_interval_key, R.
-            string.settings_update_interval_default);
+                string.settings_update_interval_default);
 
         mUpdateScheduler = Executors.newSingleThreadScheduledExecutor();
         mUpdateScheduler.scheduleAtFixedRate
-            (new Runnable() {
-                public void run() {
-                    restartLoader();
-                }
-            }, 0, Integer.valueOf(updateInterval), TimeUnit.MINUTES);
+                (new Runnable() {
+                    public void run() {
+                        restartLoader();
+                    }
+                }, 0, Integer.valueOf(updateInterval), TimeUnit.MINUTES);
     }
 
     /**
